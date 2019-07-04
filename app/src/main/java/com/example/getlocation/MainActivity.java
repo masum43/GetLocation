@@ -5,6 +5,8 @@ import androidx.core.app.ActivityCompat;
 
 import android.Manifest;
 import android.content.pm.PackageManager;
+import android.location.Address;
+import android.location.Geocoder;
 import android.location.Location;
 import android.os.Bundle;
 import android.widget.Toast;
@@ -15,6 +17,10 @@ import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationResult;
 import com.google.android.gms.location.LocationServices;
 
+import java.io.IOException;
+import java.util.List;
+import java.util.Locale;
+
 public class MainActivity extends AppCompatActivity {
 
     private FusedLocationProviderClient fusedLocationProviderClient;
@@ -22,12 +28,18 @@ public class MainActivity extends AppCompatActivity {
     private LocationCallback locationCallback;
     private Double latitude,longitude;
 
+    //to encode latitude and longitude into address
+    private Geocoder geocoder;
+    private List<Address> addresses;
+
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        geocoder = new Geocoder(this, Locale.ENGLISH);
 
         locationCallback = new LocationCallback(){
 
@@ -43,6 +55,22 @@ public class MainActivity extends AppCompatActivity {
 
                         latitude = location.getLatitude();
                         longitude = location.getLongitude();
+
+
+                        try {
+                            addresses = geocoder.getFromLocation(latitude,longitude,1);
+
+                            //Address address = addresses.get(0);
+                            String address = addresses.get(0).getAddressLine(0)+"\n" + addresses.get(0).getLocality()+"\n"
+                                    +addresses.get(0).getPostalCode();
+
+                            Toast.makeText(MainActivity.this, ""+address, Toast.LENGTH_LONG).show();
+
+                        }
+                        catch (IOException e) {
+                            e.printStackTrace();
+                        }
+
 
                         Toast.makeText(MainActivity.this, latitude+"  "+longitude, Toast.LENGTH_SHORT).show();
                     }
