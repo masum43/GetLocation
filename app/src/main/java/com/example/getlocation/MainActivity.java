@@ -4,11 +4,13 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 
 import android.Manifest;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.Toast;
 
 import com.google.android.gms.location.FusedLocationProviderClient;
@@ -22,6 +24,8 @@ import java.util.List;
 import java.util.Locale;
 
 public class MainActivity extends AppCompatActivity {
+
+    //AIzaSyCZO6pA2Dm86n_qgXw9SJCp-s_otjPIfks
 
     private FusedLocationProviderClient fusedLocationProviderClient;
     private LocationRequest locationRequest;
@@ -104,5 +108,13 @@ public class MainActivity extends AppCompatActivity {
         fusedLocationProviderClient.requestLocationUpdates(locationRequest, locationCallback, null);
 
 
+    }
+
+    public void Start_Map(View view) {
+
+        Intent intent = new Intent(MainActivity.this,MapsActivity.class);
+        intent.putExtra("LAT",latitude);
+        intent.putExtra("LON",longitude);
+        startActivity(intent);
     }
 }
