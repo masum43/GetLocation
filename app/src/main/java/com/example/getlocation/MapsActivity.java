@@ -2,6 +2,7 @@ package com.example.getlocation;
 
 import androidx.fragment.app.FragmentActivity;
 
+import android.graphics.Color;
 import android.os.Bundle;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -10,8 +11,10 @@ import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.CameraPosition;
+import com.google.android.gms.maps.model.JointType;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.gms.maps.model.PolylineOptions;
 
 public class MapsActivity extends FragmentActivity implements OnMapReadyCallback {
 
@@ -51,11 +54,30 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
 
-        // Add a marker in Sydney and move the camera
+        //PolyLine
+        LatLng HR = new LatLng(22.862569, 91.090780);
         LatLng Noakhali = new LatLng(latitude,longitude);
-        mMap.addMarker(new MarkerOptions().position(Noakhali).title("Marker in Noakhali").icon(BitmapDescriptorFactory.fromResource(R.drawable.carresized)));
+        PolylineOptions polylineOptions = new PolylineOptions();
+        polylineOptions.add(HR);
+        polylineOptions.add(Noakhali);
+        polylineOptions.color(Color.GREEN);
+        polylineOptions.jointType(JointType.BEVEL);
+        polylineOptions.width(20);
+
+        mMap.addPolyline(polylineOptions);
+
+        // Add a marker in Sydney and move the camera
+       // LatLng HR = new LatLng(22.862569, 91.090780);
+        mMap.addMarker(new MarkerOptions().position(HR).title("Marker in Noakhali").icon(BitmapDescriptorFactory.fromResource(R.drawable.resizeimage)));
         //mMap.moveCamera(CameraUpdateFactory.newLatLng(Noakhali));
-        CameraPosition cameraPosition = new CameraPosition.Builder().target(Noakhali).zoom(17).build(); //for zooming
+        CameraPosition cameraPosition = new CameraPosition.Builder().target(HR).zoom(16).build(); //for zooming
         mMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition)); //to animate
+
+
+        //LatLng Noakhali = new LatLng(latitude,longitude);
+        mMap.addMarker(new MarkerOptions().position(Noakhali).title("Marker in Noakhali").icon(BitmapDescriptorFactory.fromResource(R.drawable.resizeimage)));
+        //mMap.moveCamera(CameraUpdateFactory.newLatLng(Noakhali));
+        CameraPosition cameraPosition2 = new CameraPosition.Builder().target(Noakhali).zoom(16).build(); //for zooming
+        mMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition2)); //to animate
     }
 }
